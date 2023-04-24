@@ -1,0 +1,36 @@
+app :
+
+user chaeking
+
+
+open door 
+
+turn servo to right
+
+close door
+
+turn servo to right
+
+open light
+
+turn led on
+
+close door
+
+turn led off
+
+ECU :
+
+led
+bluetooth
+servo
+buzzer
+eeprom
+
+
+mcal :
+
+dio
+timers & pwm 
+uart
+i2c
