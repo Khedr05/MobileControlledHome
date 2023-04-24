@@ -1,7 +1,9 @@
 app :
 
-user chaeking
 
+Main :
+
+States
 
 open door 
 
@@ -18,6 +20,22 @@ turn led on
 close door
 
 turn led off
+
+Command Handliang Folder :
+
+function take command and Call The Function To Do the command After check it and return the status of the function
+
+
+password Check :
+
+take data form user and check it 
+
+appInit : 
+
+this file will init all perphiral 
+
+
+
 
 ECU :
 
