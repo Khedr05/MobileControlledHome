@@ -20,6 +20,10 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Application/Master_User \
+Application/Normal_User \
+Application/Password_Check \
+Application/String_Functions \
 Application \
 HAL/BUZZER \
 HAL/EEPROM \

@@ -7,72 +7,96 @@
 /*************************************************************************/
 
 #include "application.h"
-#include <util/delay.h>
-static enu_app_states Current_State;
 
-u8 Entered_Username[50];
-u8 Entered_Password[50];
+enu_app_states Current_State;
+
+u8 temp_char;
+u8 char_counter=0;
+u8 input_temp_string[array_max_size];
+u8 input_username_string[array_max_size];
+u8 input_psw_string[array_max_size];
+
+
+LED_cfg RED_LED = {
+		.PortName = PORTB,
+		.PinNum	  = PIN1,
+		.InitialStatus = InitiallyOff
+};
+
+
+UART_tcfgInitialize UART1 = {
+		.GLOBAL_tcfgCharSize = CHAR_8_BITS,
+		.GLOBAL_tcfgParityState = PARITY_DISABLED,
+		.GLOBAL_tcfgStopBits = STOP_BITS_1,
+		.GLOBAL_tcfgUartBaudRate1X = UART_BR1X_38400,
+		.GLOBAL_tcfgUartClkMode = UART_ASYNCHRONOUS,
+		.GLOBAL_tcfgUartCommMode = UART_1X_SPEED,
+		.GLOBAL_tcfgUartInterrupt = UART_INTERRUPT_DISABLED
+};
+
+SERVO_PWM_cfg_t SERVO1 = {
+		.ServoPWM.PWM_TimerChannel = TIMER1_FastICR,
+		.ServoPWM.PWM_TimerPrescale  = PRE_64,
+		.ServoPWM.PWM_ToggleMode  = PWM_OCmode,
+		.ServoPWM.PWM_InvertOrNot   = PWM_NonInvertingMode,
+		.ServoInitialDirection = SERVO_0,
+		.ICR_Value = 2500,
+		.OCR_0degree_Value = 125,
+		.OCR_90degree_Value = 188,
+		.OCR_180degree_Value = 250
+};
+
 
 void app_vInit(void){
-	Current_State = off_state; // Initial state is off
-
 	/* Initialize hardware components */
-	LED_vInit(&RED_LED);
-	LED_vInit(&YELLOW_LED);
-	LED_vInit(&GREEN_LED);
-	SERVO_vInit(&SERVO1);
+	//LED_vInit(&RED_LED);
+	//SERVO_vInit(&SERVO1);
 	UART_vInit(&UART1);
-	BUZZER_vInit(&BUZZ1);
-	EEPROM_vinit();
-}
-
-void app_vMain(void){
 	UART_vEnable(&UART1);
+	//EEPROM_vinit();
+	Current_State = start_state;
 
+	/* Initialize variables */
 
 }
 
-int main(void){
-	/* Initialization part */
-	app_vInit();
-	app_vMain();
-	u8 temp;
-	u8 i, j;
-/*	UART_vSendString((u8*)"Initialization Complete...\r\n");
-	UART_vSendString((u8*)"Welcome To Mobile Controlled System!\r\n");
-	UART_vSendString((u8*)"\r\nEnter Username: ");
-	while('\r' != temp){
-		temp = UART_u8ReceiveData();
-		UART_vSendData(temp);
-		Entered_Username[i++] = temp;
+void app_ReceiveInput(void){
+	while(temp_char != '\r'){
+		temp_char = UART_u8ReceiveData();
+		UART_vSendData(temp_char);
+		if(temp_char != '\r'){
+			if(array_max_size != char_counter){
+				input_temp_string[char_counter] = temp_char;
+				char_counter++;
+			}
+		}
 	}
-	i=0;
-	temp = 0;
-	UART_vSendString((u8*)"\r\nEnter Password: ");
-	while('\r' != temp){
-		temp = UART_u8ReceiveData();
-		UART_vSendData(temp);
-		Entered_Password[i++] = temp;
-	}
-	UART_vSendString((u8*)"\r\nLogging...\r\n");*/
-	temp = EEPROM_u8WriteByte(0, 'A', BLOCK1);
-	UART_vSendData(temp+48);
-	_delay_ms(1000);
-	temp = EEPROM_u8WriteByte(9, 'B', BLOCK1);
-	UART_vSendData(temp+48);
-	_delay_ms(1000);
-	temp = EEPROM_u8ReadByte(0, &i, BLOCK1);
-	UART_vSendData(temp+48);
-	_delay_ms(1000);
-	temp = EEPROM_u8ReadByte(9, &j, BLOCK1);
-	UART_vSendData(temp+48);
-	_delay_ms(1000);
-	UART_vSendData(i);
-	_delay_ms(1000);
-	UART_vSendData(j);
-	while(1){
-	/* Main Program */
+	temp_char = 0;
+	UART_vSendString((u8*)"\r\n");
+	switch(Current_State){
+	case locked_user_input:
+		/* Save entered username and jump to locked_psw_input state */
+		app_copy_string(input_temp_string, input_username_string, char_counter);
+		app_clear_string(input_temp_string, char_counter);
+		char_counter = 0;
+		break;
+	case locked_psw_input:
+		/* Save entered password and call a function to check if username and password are correct
+		 * if username and password correct, jump to unlocked_state
+		 * if username and password incorrect, go back to locked_user_input state
+		 */
+		app_copy_string(input_temp_string, input_psw_string, char_counter);
+		app_clear_string(input_temp_string, char_counter);
+		char_counter = 0;
+		break;
+	case unlocked_normal_user:
+		/* Save current command and send it to a function to execute command
+		 * if function returns 0, that means to lock the system and go back to locked_user_input
+		 */
 
+		// Function to handle the command
+		break;
+	default: /* Do Nothing */ break;
 	}
-	return 0;
+
 }

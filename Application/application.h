@@ -16,73 +16,31 @@
 #include "../HAL/BUZZER/buzzer_interface.h"
 #include "../MCAL/ATMEGA32/UART/UART_interface.h"
 #include "../HAL/EEPROM/EEPROM_interface.h"
+#include "Password_Check/Psw.h"
+#include "String_Functions/string_functions.h"
+#include "Master_User/master.h"
+#include "Normal_User/normal.h"
 
 /* Section : Macro Declarations */
-
+#define array_max_size		20
 /* Section : Hardware Configuration */
-
-PB_cfg PB_OnOff = {
-		.PortName = PORTB,
-		.PinNum   = PIN0,
-		.PBmode   = MODE_PULLUP
-};
-
-LED_cfg RED_LED = {
-		.PortName = PORTB,
-		.PinNum	  = PIN1,
-		.InitialStatus = InitiallyOff
-};
-
-LED_cfg YELLOW_LED = {
-		.PortName = PORTB,
-		.PinNum	  = PIN2,
-		.InitialStatus = InitiallyOff
-};
-
-LED_cfg GREEN_LED = {
-		.PortName = PORTB,
-		.PinNum	  = PIN3,
-		.InitialStatus = InitiallyOff
-};
-
-UART_tcfgInitialize UART1 = {
-		.GLOBAL_tcfgCharSize = CHAR_8_BITS,
-		.GLOBAL_tcfgParityState = PARITY_DISABLED,
-		.GLOBAL_tcfgStopBits = STOP_BITS_1,
-		.GLOBAL_tcfgUartBaudRate1X = UART_BR1X_38400,
-		.GLOBAL_tcfgUartClkMode = UART_ASYNCHRONOUS,
-		.GLOBAL_tcfgUartCommMode = UART_1X_SPEED,
-		.GLOBAL_tcfgUartInterrupt = UART_INTERRUPT_DISABLED
-};
-
-SERVO_PWM_cfg_t SERVO1 = {
-		.ServoPWM.PWM_TimerChannel = TIMER1_FastICR,
-		.ServoPWM.PWM_TimerPrescale  = PRE_64,
-		.ServoPWM.PWM_ToggleMode  = PWM_OCmode,
-		.ServoPWM.PWM_InvertOrNot   = PWM_NonInvertingMode,
-		.ServoInitialDirection = SERVO_0,
-		.ICR_Value = 2500,
-		.OCR_0degree_Value = 125,
-		.OCR_90degree_Value = 188,
-		.OCR_180degree_Value = 250
-};
-
-buzzer_cfg BUZZ1 = {
-		.buzzer_port = PORTB,
-		.buzzer_pin = PIN4
-};
 
 /* Section : Data Type Declarations */
 typedef enum{
-	off_state,
-	initializing_state,
-	ready_locked_state,
-	on_unlocked_state
+	start_state,
+	locked_user_input,
+	locked_psw_input,
+	locked_checking_user_psw,
+	unlocked_master_user,
+	unlocked_normal_user
 }enu_app_states;
 
 /* Section : Function Declarations */
 void app_vInit(void);
 
-void app_vMain(void);
+void app_ReceiveInput(void);
+
+u8 app_password_check();
+
 
 #endif /* APPLICATION_APPLICATION_H_ */

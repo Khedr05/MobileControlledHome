@@ -20,6 +20,10 @@ RM := rm -rf
 -include HAL/LED/subdir.mk
 -include HAL/EEPROM/subdir.mk
 -include HAL/BUZZER/subdir.mk
+-include Application/String_Functions/subdir.mk
+-include Application/Password_Check/subdir.mk
+-include Application/Normal_User/subdir.mk
+-include Application/Master_User/subdir.mk
 -include Application/subdir.mk
 -include subdir.mk
 -include objects.mk
