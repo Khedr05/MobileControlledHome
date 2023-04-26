@@ -41,6 +41,7 @@ void getCommand(void)
 
 void normalUserInterface(void)
 {
+
 	while(1)
 	{
 		getCommand();

@@ -12,7 +12,7 @@
 /* Section : Includes */
 #include "../../MCAL/ATMEGA32/UART/UART_interface.h"
 #include "../../HAL/LED/led_interface.h"
-#include "ECU_init.h"
+#include "../application.h"
 #include <string.h>
 /* Section : Macro Declarations */
 
