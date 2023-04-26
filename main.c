@@ -8,6 +8,7 @@
 
 #include "Application/application.h"
 
+
 extern enu_app_states Current_State;
 extern u8 input_username_string[20];
 extern u8 input_psw_string[20];
@@ -58,6 +59,7 @@ int main(void){
 			break;
 		case unlocked_normal_user:
 			/* ToDo: Implement normal user */
+			normalUserInterface();
 			Current_State = start_state;
 			break;
 		default: /* Do Nothing */ break;
