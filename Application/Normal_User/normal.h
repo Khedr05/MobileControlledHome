@@ -23,10 +23,22 @@
 
 /* Section : Data Type Declarations */
 
+typedef enum
+{
+	IDLE_COMMAND,
+	LED_ON,
+	LED_OFF,
+	DOOR_OPEN,
+	DOOR_CLOSE,
+	LOGOUT,
+	WRONG_COMMAND
+}EN_COMMAND_MODES;
+
 /* Section : Function Declarations */
 
 void getCommand(void);
-void normalUserInterface(void);
+EN_COMMAND_MODES setCommand(void);
+u8 normalUserInterface(void);
 
 
 #endif /* APPLICATION_NORMAL_USER_NORMAL_H_ */
