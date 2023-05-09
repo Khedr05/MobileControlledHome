@@ -23,17 +23,6 @@ LED_cfg RED_LED = {
 		.InitialStatus = InitiallyOff
 };
 
-
-UART_tcfgInitialize UART1 = {
-		.GLOBAL_tcfgCharSize = CHAR_8_BITS,
-		.GLOBAL_tcfgParityState = PARITY_DISABLED,
-		.GLOBAL_tcfgStopBits = STOP_BITS_1,
-		.GLOBAL_tcfgUartBaudRate1X = UART_BR1X_38400,
-		.GLOBAL_tcfgUartClkMode = UART_ASYNCHRONOUS,
-		.GLOBAL_tcfgUartCommMode = UART_1X_SPEED,
-		.GLOBAL_tcfgUartInterrupt = UART_INTERRUPT_DISABLED
-};
-
 SERVO_PWM_cfg_t SERVO1 = {
 		.ServoPWM.PWM_TimerChannel = TIMER1_FastICR,
 		.ServoPWM.PWM_TimerPrescale  = PRE_64,
@@ -41,7 +30,7 @@ SERVO_PWM_cfg_t SERVO1 = {
 		.ServoPWM.PWM_InvertOrNot   = PWM_NonInvertingMode,
 		.ServoInitialDirection = SERVO_0,
 		.ICR_Value = 2500,
-		.OCR_0degree_Value = 125,
+		.OCR_0degree_Value = 100,
 		.OCR_90degree_Value = 188,
 		.OCR_180degree_Value = 250
 };
@@ -86,12 +75,14 @@ void app_vInit(void){
 	LED_vInit(&roomThreeLed);
 	LED_vInit(&roomFourLed);
 	LED_vInit(&roomFiveLed);
-	//SERVO_vInit(&SERVO1);
-	UART_vInit(&UART1);
-	UART_vEnable(&UART1);
-	//EEPROM_vinit();
+	SERVO_vInit(&SERVO1);
+	SERVO_vStart(&SERVO1);
+	Bluetooth_vInit();
+	EEPROM_vinit();
+	databaseLoad();
 	Siren_vInit();
 	TMR_vInit(&TIMER2);
+	Bluetooth_vEnable();
 	Current_State = start_state;
 
 	/* Initialize variables */
@@ -100,8 +91,8 @@ void app_vInit(void){
 
 void app_ReceiveInput(void){
 	while(temp_char != '\r'){
-		temp_char = UART_u8ReceiveData();
-		UART_vSendData(temp_char);
+		temp_char = Bluetooth_u8ReceiveData();
+		Bluetooth_vSendData(temp_char);
 		if(temp_char != '\r'){
 			if(array_max_size != char_counter){
 				input_temp_string[char_counter] = temp_char;
@@ -110,7 +101,7 @@ void app_ReceiveInput(void){
 		}
 	}
 	temp_char = 0;
-	UART_vSendString((u8*)"\r\n");
+	Bluetooth_vSendString((u8*)"\r\n");
 	switch(Current_State){
 	case locked_user_input:
 		/* Save entered username and jump to locked_psw_input state */

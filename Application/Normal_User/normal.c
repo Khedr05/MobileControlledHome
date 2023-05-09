@@ -1,6 +1,6 @@
 /*************************************************************************/
 /* Author        : Omar Yamany                                    		 */
-/* File          : Cmds.c                                  	     */
+/* File          : normal.c                                	     		 */
 /* Date          : Apr 24, 2023	                                         */
 /* Version       : V1                                                    */
 /* GitHub        : https://github.com/Piistachyoo             		     */
@@ -11,6 +11,7 @@
 
 
 extern LED_cfg roomOneLed,roomTwoLed,roomThreeLed,roomFourLed,roomFiveLed;
+extern SERVO_PWM_cfg_t SERVO1;
 
 u8 arrcommand[ARR_MAX_SIZE];
 u8 temparrcommand[ARR_MAX_SIZE];
@@ -109,8 +110,8 @@ void getCommand(void)
 {
 	u8 tempChar,arrIndex = ZERO_INDEX;
 	while(tempChar != '\r'){
-		tempChar = UART_u8ReceiveData();
-		UART_vSendData(tempChar);
+		tempChar = Bluetooth_u8ReceiveData();
+		Bluetooth_vSendData(tempChar);
 			if(ARR_MAX_SIZE != arrIndex+1){
 				arrcommand[arrIndex] = tempChar;
 				arrIndex++;
@@ -120,7 +121,7 @@ void getCommand(void)
 	strcpy((char *)temparrcommand,(char *)arrcommand);
 	arrIndex = ZERO_INDEX;
 	tempChar = ZERO_INDEX;
-	UART_vSendString((u8*)"\r\n");
+	Bluetooth_vSendString((u8*)"\r\n");
 	userCommand = setCommand();
 }
 
@@ -128,14 +129,14 @@ void getCommand(void)
 
 u8 normalUserInterface(void)
 {
-	UART_vSendString((u8 *)"WelCome In User Mode \r");
+	Bluetooth_vSendString((u8 *)"WelCome In User Mode \r\n\n");
 	while(1)
 	{
-		UART_vSendString((u8 *)"1 - led on \r");
-		UART_vSendString((u8 *)"2 - led off \r");
-		UART_vSendString((u8 *)"3 - door open \r");
-		UART_vSendString((u8 *)"4 - door close \r");
-		UART_vSendString((u8 *)"5 - logout \r");
+		Bluetooth_vSendString((u8 *)"1 - led on \r\n");
+		Bluetooth_vSendString((u8 *)"2 - led off \r\n");
+		Bluetooth_vSendString((u8 *)"3 - door open \r\n");
+		Bluetooth_vSendString((u8 *)"4 - door close \r\n");
+		Bluetooth_vSendString((u8 *)"5 - logout \r\n");
 		getCommand();
 		switch(userCommand)
 		{
@@ -146,54 +147,54 @@ u8 normalUserInterface(void)
 		}
 		case LED_ON:
 		{
-			UART_vSendString((u8 *)"Turning Led On... \r");
+			Bluetooth_vSendString((u8 *)"Turning Led On... \r\n");
 			LED_vTurnOn(&roomOneLed);
 			LED_vTurnOn(&roomTwoLed);
 			LED_vTurnOn(&roomThreeLed);
 			LED_vTurnOn(&roomFourLed);
 			LED_vTurnOn(&roomFiveLed);
-			UART_vSendString((u8 *)"All Led Turned On Successfully\r");
+			Bluetooth_vSendString((u8 *)"All Led Turned On Successfully\r\n");
 			userCommand = IDLE_COMMAND;
 			break;
 		}
 		case LED_OFF:
 		{
-			UART_vSendString((u8 *)"Turning Led Off... \r");
+			Bluetooth_vSendString((u8 *)"Turning Led Off... \r\n");
 			LED_vTurnOff(&roomOneLed);
 			LED_vTurnOff(&roomTwoLed);
 			LED_vTurnOff(&roomThreeLed);
 			LED_vTurnOff(&roomFourLed);
 			LED_vTurnOff(&roomFiveLed);
-			UART_vSendString((u8 *)"All Led Turned Off Successfully\r");
+			Bluetooth_vSendString((u8 *)"All Led Turned Off Successfully\r\n");
 			userCommand = IDLE_COMMAND;
 			break;
 		}
 		case DOOR_OPEN:
 		{
-			UART_vSendString((u8 *)"Opening Door Lock... \r");
-			/*Call Your Function Here To Open Door*/
-			UART_vSendString((u8 *)"Door Lock Opened Successfully... \r");
+			Bluetooth_vSendString((u8 *)"Opening Door Lock... \r\n");
+			SERVO_vChangeDirection(&SERVO1, SERVO_180);
+			Bluetooth_vSendString((u8 *)"Door Lock Opened Successfully... \r\n");
 			userCommand = IDLE_COMMAND;
 			break;
 		}
 		case DOOR_CLOSE:
 		{
-			UART_vSendString((u8 *)"Close Door Lock... \r");
-			/*Call Your Function Here To Close Door*/
-			UART_vSendString((u8 *)"Door Lock Closed Successfully... \r");
+			Bluetooth_vSendString((u8 *)"Close Door Lock... \r\n");
+			SERVO_vChangeDirection(&SERVO1, SERVO_0);
+			Bluetooth_vSendString((u8 *)"Door Lock Closed Successfully... \r\n");
 			userCommand = IDLE_COMMAND;
 			break;
 		}
 		case LOGOUT:
 		{
-			UART_vSendString((u8 *)"Logging Out...\r");
+			Bluetooth_vSendString((u8 *)"Logging Out...\r\n");
 			userCommand = IDLE_COMMAND;
 			return 0;
 			break;
 		}
 		case WRONG_COMMAND:
 		{
-			UART_vSendString((u8 *)"You Enter Invalid Command Please Try Again \r");
+			Bluetooth_vSendString((u8 *)"You Enter Invalid Command Please Try Again \r\n");
 			userCommand = IDLE_COMMAND;
 		}
 		}

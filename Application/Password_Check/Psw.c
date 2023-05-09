@@ -8,17 +8,15 @@
 
 #include "psw.h"
 
-
+extern ST_userData_t USER_ONE,USER_TWO,USER_THREE,USER_FOUR,USER_FIVE;
 extern u8 input_username_string[20];
 extern u8 input_psw_string[20];
 static u8 psw_Check_If_Master();
+static u8 psw_check_If_Normal();
 extern TMR_cfg_t TIMER2;
 extern u8 timer2_flag;
 
-u8 saved_user1[20] 	   = "Omar";
-u8 saved_user1_psw[20] = "Yamany";
-u8 saved_user2[20] 	   = "Sherif";
-u8 saved_user2_psw[20] = "Ashraf";
+
 
 /*
  * This function takes username and password as input and check if it's equal to the saved ones
@@ -28,22 +26,20 @@ u8 saved_user2_psw[20] = "Ashraf";
  */
 enu_psw_check_return psw_Check_Credentials(){
 	u8 temp_return = 0;
+	/* Check if user entered "FREE" as username and password" */
+	if( (strcmp((char*)input_username_string, "FREE") == 0) && (strcmp((char*)input_psw_string, "FREE") == 0) ){
+		return wrong_data;
+	}
 	/* Check if username and password are for master */
 	temp_return = psw_Check_If_Master();
-	if(temp_return == 1){
+	if(temp_return == master_data){
 		return master_data;
-	}
+	}else{ /* Do Nothing */ }
 	/* If not, check for saved users */
-	if(strcmp((char*)saved_user1, (char*)input_username_string) == 0){
-		if(strcmp((char*)saved_user1_psw, (char*)input_psw_string) == 0){
-			return correct_data;
-		}
-	}
-	else if(strcmp((char*)saved_user2, (char*)input_username_string) == 0){
-		if(strcmp((char*)saved_user2_psw, (char*)input_psw_string) == 0){
-			return correct_data;
-		}
-	}
+	temp_return = psw_check_If_Normal();
+	if(temp_return == correct_data){
+		return correct_data;
+	}else{ /* Do Nothing */ }
 	/* If not, return 0 as not found */
 	return wrong_data;
 }
@@ -58,10 +54,10 @@ static u8 psw_Check_If_Master(){
 	u8 Master_password[20] = "MASTER";
 	/* If username and password equals to master user and password, return 1 */
 	if( (strcmp((char*)input_username_string, (char*)Master_username) == 0) && (strcmp((char*)input_psw_string, (char*)Master_password) == 0) ){
-		return 1;
+		return master_data;
 	}
 	/* If username and password are not for master user, return 0 */
-	return 0;
+	return wrong_data;
 }
 
 /**
@@ -87,4 +83,39 @@ void psw_theft_protection(void){
 		_delay_ms(1000);
 	}
 	TMR_vStop(&TIMER2);
+}
+
+/*
+ * This function checks if username and password are for normal user or not
+ * returns 1 if the inputs are identical to a normal user login credentials
+ * returns 0 if the inputs are not identical to a normal user login credentials
+ */
+static u8 psw_check_If_Normal(){
+	if(strcmp((char*)(USER_ONE.userName), (char*)input_username_string) == 0){
+		if(strcmp((char*)(USER_ONE.userPass), (char*)input_psw_string) == 0){
+			return correct_data;
+		}
+	}
+	else if(strcmp((char*)(USER_TWO.userName), (char*)input_username_string) == 0){
+		if(strcmp((char*)(USER_TWO.userPass), (char*)input_psw_string) == 0){
+			return correct_data;
+		}
+	}
+	else if(strcmp((char*)(USER_THREE.userName), (char*)input_username_string) == 0){
+		if(strcmp((char*)(USER_THREE.userPass), (char*)input_psw_string) == 0){
+			return correct_data;
+		}
+	}
+	else if(strcmp((char*)(USER_FOUR.userName), (char*)input_username_string) == 0){
+		if(strcmp((char*)(USER_FOUR.userPass), (char*)input_psw_string) == 0){
+			return correct_data;
+		}
+	}
+	else if(strcmp((char*)(USER_FIVE.userName), (char*)input_username_string) == 0){
+		if(strcmp((char*)(USER_FIVE.userPass), (char*)input_psw_string) == 0){
+			return correct_data;
+		}
+	}
+	else{ /* Do Nothing */ }
+	return wrong_data;
 }

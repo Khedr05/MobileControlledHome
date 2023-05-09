@@ -1,26 +1,19 @@
-/*************************************************************************/
-/* Author        : Omar Yamany                                    		 */
-/* File          : master.h                                  	     */
-/* Date          : Apr 25, 2023	                                         */
-/* Version       : V1                                                    */
-/* GitHub        : https://github.com/Piistachyoo             		     */
-/*************************************************************************/
+/*
+ * master.h
+ *
+ *  Created on: 5 May 2023
+ *      Author: 20101
+ */
 
-#ifndef APPLICATION_MASTER_USER_MASTER_H_
-#define APPLICATION_MASTER_USER_MASTER_H_
+#ifndef USER_MANAGMENT_USER_MANGMANT_FLOW_H_
+#define USER_MANAGMENT_USER_MANGMANT_FLOW_H_
 
-/* Section : Includes */
-#include "../../SERVICES/STD_TYPES/STD_TYPES.h"
-#include "../../SERVICES/BIT_MATH/BIT_MATH.h"
-#include "../../MCAL/ATMEGA32/UART/UART_interface.h"
 
-/* Section : Macro Declarations */
+#include "../User_Management/user_handling.h"
 
-/* Section : Macro Functions Declarations */
 
-/* Section : Data Type Declarations */
 
-/* Section : Function Declarations */
-void master_main_interface(void);
+void master_user_interface();
 
-#endif /* APPLICATION_MASTER_USER_MASTER_H_ */
+
+#endif /* USER_MANAGMENT_USER_MANGMANT_FLOW_H_ */

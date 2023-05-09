@@ -330,7 +330,7 @@ void PWM_vSetOCR(const PWM_cfg_t *PWM, u16 Copy_u16OCRValue){
 		case TIMER1_PhaseOCR:
 		case TIMER1_FastICR:
 		case TIMER1_FastOCR:
-			OCR1A_REG = Copy_u16OCRValue;
+			OCR1B_REG = Copy_u16OCRValue;
 			break;
 		case TIMER2_PhaseCorrect:
 		case TIMER2_FastPWM:
@@ -346,6 +346,7 @@ void PWM_vStart(const PWM_cfg_t *PWM){
 		switch(PWM->PWM_TimerChannel){
 		case TIMER0_PhaseCorrect:
 		case TIMER0_FastPWM:
+			DIO_vSetPinDir(PORTB, PIN3, OUTPUT);
 			switch(PWM->PWM_TimerPrescale){
 			case PRE_NO_CLK:
 				TCCR0_REG = (TCCR0_REG&0xF8);
@@ -386,6 +387,7 @@ void PWM_vStart(const PWM_cfg_t *PWM){
 		case TIMER1_PhaseOCR:
 		case TIMER1_FastICR:
 		case TIMER1_FastOCR:
+			DIO_vSetPinDir(PORTD, PIN4, OUTPUT);
 			switch(PWM->PWM_TimerPrescale){
 			case PRE_NO_CLK:
 				TCCR1B_REG = (TCCR1B_REG&0xF8);
@@ -416,6 +418,7 @@ void PWM_vStart(const PWM_cfg_t *PWM){
 			break;
 		case TIMER2_PhaseCorrect:
 		case TIMER2_FastPWM:
+			DIO_vSetPinDir(PORTD, PIN7, OUTPUT);
 			switch(PWM->PWM_TimerPrescale){
 			case PRE_NO_CLK:
 				TCCR2_REG = (TCCR2_REG&0xF8);

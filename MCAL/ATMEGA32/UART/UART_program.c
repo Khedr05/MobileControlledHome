@@ -123,3 +123,9 @@ void UART_vSendString(u8 *Copy_u8Str){
 		UART_vSendData(*(Copy_u8Str++));
 	}
 }
+
+void UART_vClearBuffer(){
+	u8 temp;
+	temp = UDR_REG;
+	CLR_BIT(UCSRA_REG, RXC_BIT);
+}

@@ -12,14 +12,14 @@
 /* Section : Includes */
 #include "../HAL/LED/led_interface.h"
 #include "../HAL/SERVO/servo_interface.h"
-#include "../MCAL/ATMEGA32/UART/UART_interface.h"
+#include "../HAL/Bluetooth_Module/bluetooth.h"
 #include "../HAL/EEPROM/EEPROM_interface.h"
 #include "../MCAL/ATMEGA32/TMR/TMR_interface.h"
 #include "../HAL/SIREN/siren.h"
 #include "Password_Check/Psw.h"
 #include "String_Functions/string_functions.h"
-#include "Master_User/master.h"
 #include "Normal_User/normal.h"
+#include "Master_User/master.h"
 #include <util/delay.h>
 
 /* Section : Macro Declarations */

@@ -43,4 +43,6 @@ u8 UART_u8ReceiveData(void);
 
 void UART_vSendString(u8 *Copy_u8Str);
 
+void UART_vClearBuffer();
+
 #endif /* MCAL_ATMEGA32_UART_UART_INTERFACE_H_ */

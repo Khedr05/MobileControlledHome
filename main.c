@@ -72,12 +72,14 @@ int main(void){
 			}
 			break;
 		case unlocked_master_user:
-			master_main_interface();
+			master_user_interface();
 			Current_State = start_state;
+			Bluetooth_vClearBuffer();
 			break;
 		case unlocked_normal_user:
 			normalUserInterface();
 			Current_State = start_state;
+			Bluetooth_vClearBuffer();
 			break;
 		default: /* Do Nothing */ break;
 		}

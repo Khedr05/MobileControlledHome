@@ -12,6 +12,7 @@
 /* Section : Includes */
 #include "PWM_config.h"
 #include "PWM_private.h"
+#include "../DIO/DIO_interface.h"
 #include "../../../Services/BIT_MATH/BIT_MATH.h"
 #include "../../../Services/STD_TYPES/STD_TYPES.h"
 

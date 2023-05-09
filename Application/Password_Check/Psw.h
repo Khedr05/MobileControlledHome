@@ -14,6 +14,7 @@
 #include "../../SERVICES/BIT_MATH/BIT_MATH.h"
 #include <string.h>
 #include "../application.h"
+#include "../User_Management/user_handling.h"
 
 /* Section : Macro Declarations */
 

@@ -53,7 +53,8 @@ typedef enum{
 typedef enum{
 	UART_BR2X_2400 = 416,
 	UART_BR2X_4800 = 207,
-	UART_BR2X_9600 = 103
+	UART_BR2X_9600 = 103,
+	UART_BR2X_38400 = 25
 }UARTBaudRate2X_tcfg;
 
 typedef enum{

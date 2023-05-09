@@ -1,6 +1,6 @@
 /*************************************************************************/
 /* Author        : Omar Yamany                                    		 */
-/* File          : Cmds.h                                  	     */
+/* File          : normal.h      	                            	     */
 /* Date          : Apr 24, 2023	                                         */
 /* Version       : V1                                                    */
 /* GitHub        : https://github.com/Piistachyoo             		     */
