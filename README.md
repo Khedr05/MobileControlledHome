@@ -1,21 +1,22 @@
 
 
+
 # Mobile Controlled Home
 
-
+[Mobile Controlled Home (AVR-ATmega32 Proteus Simulation)](https://www.youtube.com/watch?v=cHHTXfkM3TI&list=PLC3Wwc_IeCN8d-kV1xPaiXWGpabYQGxY_&index=7)
 
 ## Description:
 
-#### The system allows controlling the home by mobile phone application through Bluetooth. Two subsystems are implemented; Safety door that could be opened by the mobile application by entering user name and password, and light on/off that could be controlled also by the mobile phone. The system supports 5 users with different names and password. In case of entering the name of the password 3 times wrong, the system should give alarm.
+#### The system allows controlling the home by mobile phone application through Bluetooth. Two subsystems are implemented; a Safety door that could be opened by the mobile application by entering the user name and password, and a light on/off that could be controlled also by the mobile phone. The system supports 5 users with different names and passwords. In case of entering the name of the password 3 times wrong, the system should give an alarm.
 
-After power on and initialization, the system enters the login state.
+After powering on and initialization, the system enters the login state.
 
 ### Login interface:
 ![login_interface](https://github.com/sherifkhadr/MobileControlledHome/blob/main/Screenshots/Login_Interface.png?raw=true)
-- The program asks the user to enter username and password, and checks if it matches any user that is saved in the EEPROM.
-- If the user entered wrong username or password for 3 times, the system is locked for 10 seconds, and a siren sound is generated from the buzzer using PWM, then the system is unlocked again after the 10 seconds.
-- If the user entered "**MASTER**" as a username and password, the system enters "Master User" state.
-- If the user entered correct username and password, the system enters "Normal User" state.
+- The program asks the user to enter a username and password, and checks if it matches any user that is saved in the EEPROM.
+- If the user entered a wrong username or password 3 times, the system is locked for 10 seconds, and a siren sound is generated from the buzzer using PWM, then the system is unlocked again after 10 seconds.
+- If the user entered "**MASTER**" as a username and password, the system enters the "Master User" state.
+- If the user entered a correct username and password, the system enters the "Normal User" state.
 
 ### Master User interface:
 ![master_interface](https://github.com/sherifkhadr/MobileControlledHome/blob/main/Screenshots/Master_Interface.png?raw=true)
@@ -24,7 +25,7 @@ After power on and initialization, the system enters the login state.
 	 1. **Add User:** Adds a new user to the system
 	 2. **Edit User:** Edits an existing user
 	 3. **Remove User:** Removes an existing user from the system
-	 4. **Exit:** Exits master user interface and returns back to login interface
+	 4. **Exit:** Exits master user interface and returns to login interface
 
 ### Normal User interface:
 ![normal_interface](https://github.com/sherifkhadr/MobileControlledHome/blob/main/Screenshots/Normal_Interface.png?raw=true)
@@ -43,24 +44,24 @@ After power on and initialization, the system enters the login state.
 ### Peripherals used:
 
  1. DIO: Used for controlling GPIO pins.
- 2. Timer0: used in PWM mode to create siren sound from buzzer
+ 2. Timer0: used in PWM mode to create a siren sound from the buzzer
  3. Timer1: Used in PWM mode to control the servo motor
  4. Timer2: Used in normal mode for generating delays in the system
  5. TWI (I2C): Used for interfacing with the EEPROM
- 6. UART: Used for interfacing with the bluetooth module
+ 6. UART: Used for interfacing with the Bluetooth module
 
 ### Files:
 - #### Application Layer:
 	1. Master_User: Provides the master user interface
 	2. Normal_User: Provides the master user interface
-	3. Password_Check: Contains functions responsible for password checking mechanisms
-	4. String_Functions: Contains functions that helps in dealing with strings
-	5. User_Management: Contains functions that manages all the users in the system.
+	3. Password_Check: Contains functions responsible for password-checking mechanisms
+	4. String_Functions: Contains functions that help in dealing with strings
+	5. User_Management: Contains functions that manage all the users in the system.
  - #### Hardware Abstraction Layer:
-	 1. Bluetooth_Module: Driver for HC-05 bluetooth module and is used for interfacing with mobile phone
+	 1. Bluetooth_Module: Driver for HC-05 Bluetooth module and is used for interfacing with mobile phone
 	 2. EEPROM: Driver for ST24C08 EEPROM and is used to read and write data from and to the EEPROM
 	 3. SERVO: Driver used to control the servo motor
-	 4. SIREN: Driver used to make siren sound from the buzzer
+	 4. SIREN: Driver used to make a siren sound from the buzzer
  - #### Hardware Abstraction Layer:
 	 1. DIO: Driver used to control the GPIO pins
 	 2. GIE: Driver used to control the global interrupt enable for the MCU
