@@ -7,9 +7,15 @@
 
 ## Description:
 
-#### The system allows controlling the home by mobile phone application through Bluetooth. Two subsystems are implemented; a Safety door that could be opened by the mobile application by entering the user name and password, and a light on/off that could be controlled also by the mobile phone. The system supports 5 users with different names and passwords. In case of entering the name of the password 3 times wrong, the system should give an alarm.
+#### The system allows controlling the home by mobile phone application through Bluetooth. 
 
-After powering on and initialization, the system enters the login state.
+#### Two subsystems are implemented; a Safety door that could be opened by the mobile application by entering the user name and password, and a light on/off that could also be controlled by the mobile phone. 
+
+#### The system supports 5 users with different names and passwords, and uses an external EEPROM to read and save users' data.
+
+#### In case of entering the username and password 3 times wrong, the system should give an alarm.
+
+#### After powering on and initialization, the system enters the login state.
 
 ### Login interface:
 ![login_interface](https://github.com/sherifkhadr/MobileControlledHome/blob/main/Screenshots/Login_Interface.png?raw=true)
